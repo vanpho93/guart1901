@@ -25,6 +25,7 @@ export class UserService {
             if (!resJson.success) return alert(resJson.message);
             this.store.dispatch({ type: 'SET_USER', user: resJson.user });
             this.router.navigate(['/profile']);
+            localStorage.setItem('token', resJson.user.token);
         });
     }
 
@@ -37,7 +38,10 @@ export class UserService {
         .toPromise()
         .then(res => res.json(), res => res.json())
         .then(resJson => {
-            console.log(resJson);
+            if (!resJson.success) return this.router.navigate(['/signin']);
+            this.store.dispatch({ type: 'SET_USER', user: resJson.user });
+            this.router.navigate(['/profile']);
+            localStorage.setItem('token', resJson.user.token);
         });
     }
 }
