@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { Router } from '@angular/router';
 
 const SERVER_URL = 'http://localhost:3000';
 
 @Injectable()
 
 export class UserService {
-    constructor(private http: Http) {}
+    constructor(private http: Http, private router: Router) {}
 
     signIn(email: string, password: string) {
         const body = JSON.stringify({ email, password });
@@ -15,7 +16,8 @@ export class UserService {
         .toPromise()
         .then(res => res.json(), res => res.json())
         .then(resJson => {
-            console.log(resJson);
+            if (!resJson.success) return alert(resJson.message);
+            this.router.navigate(['/profile']);
         });
     }
 
