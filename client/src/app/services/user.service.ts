@@ -14,7 +14,6 @@ export class UserService {
         return this.http.post(`${SERVER_URL}/signin`, body, { headers })
         .toPromise()
         .then(res => res.json(), res => res.json())
-        .then(res => res.json(), res => res.json())
         .then(resJson => {
             console.log(resJson);
         });

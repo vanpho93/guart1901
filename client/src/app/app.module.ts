@@ -13,6 +13,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
+import { UserService } from './services/user.service';
+
 const routesConfig: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'profile', component: ProfileComponent },
@@ -41,7 +43,7 @@ const routesConfig: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(routesConfig),
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
