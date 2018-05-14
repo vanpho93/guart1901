@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -14,6 +15,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { UserService } from './services/user.service';
+import { userReducer, loadingReducer } from './ngrx/reducers';
 
 const routesConfig: Routes = [
   { path: '', component: HomePageComponent },
@@ -41,6 +43,7 @@ const routesConfig: Routes = [
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
+    StoreModule.forRoot({ user: userReducer, loading: loadingReducer }),
     RouterModule.forRoot(routesConfig),
   ],
   providers: [UserService],
