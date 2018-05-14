@@ -11,6 +11,7 @@ import { UserService } from './services/user.service';
 
 export class AppComponent implements OnInit {
   user: User = null;
+  loading = true;
 
   constructor(
     private store: Store<AppState>,
@@ -19,6 +20,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.store.select('user').subscribe(user => this.user = user);
+    this.store.select('loading').subscribe(loading => this.loading = loading);
     this.userService.check();
   }
 }

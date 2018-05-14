@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <nav *ngIf="!user">
       <a routerLink="/" class="btn btn-success" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/signin" class="btn btn-success" routerLinkActive="active">Sign In</a>
@@ -12,4 +12,7 @@
       <a class="btn btn-success" routerLinkActive="active">Log out</a>
   </nav>
   <router-outlet></router-outlet>
+</div>
+<div class="container" *ngIf="loading">
+    <p>Loading...</p>
 </div>
