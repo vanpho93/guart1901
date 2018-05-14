@@ -9,7 +9,7 @@
       <a routerLink="/" class="btn btn-success" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/profile" class="btn btn-success" routerLinkActive="active">Profile</a>
       <a routerLink="/friends" class="btn btn-success" routerLinkActive="active">Friends</a>
-      <a class="btn btn-success" routerLinkActive="active">Log out</a>
+      <a class="btn btn-success" (click)="logOut();">Log out</a>
   </nav>
   <router-outlet></router-outlet>
 </div>

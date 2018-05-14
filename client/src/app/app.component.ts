@@ -23,4 +23,8 @@ export class AppComponent implements OnInit {
     this.store.select('loading').subscribe(loading => this.loading = loading);
     this.userService.check();
   }
+
+  logOut() {
+    this.userService.logOut();
+  }
 }
