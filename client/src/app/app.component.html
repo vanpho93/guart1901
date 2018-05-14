@@ -1,9 +1,12 @@
 <div class="container">
-  <nav>
+  <nav *ngIf="!user">
       <a routerLink="/" class="btn btn-success" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/signin" class="btn btn-success" routerLinkActive="active">Sign In</a>
       <a routerLink="/signup" class="btn btn-success" routerLinkActive="active">Sign Up</a>
       <a routerLink="/password" class="btn btn-success" routerLinkActive="active">Password</a>
+  </nav>
+  <nav *ngIf="user">
+      <a routerLink="/" class="btn btn-success" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
       <a routerLink="/profile" class="btn btn-success" routerLinkActive="active">Profile</a>
       <a routerLink="/friends" class="btn btn-success" routerLinkActive="active">Friends</a>
       <a class="btn btn-success" routerLinkActive="active">Log out</a>
