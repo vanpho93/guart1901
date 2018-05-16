@@ -33,32 +33,22 @@ export class UserService {
     verifyToken(): boolean {
         try {
             const token = localStorage.getItem('token');
-            if (!token) {
-                this.store.dispatch({ type: 'LOADED' });
-                return false;
-            }
+            if (!token) return false;
             const decoded: any = decode(token);
-            if (!decode) {
-                this.store.dispatch({ type: 'LOADED' });
-                localStorage.removeItem('token');
-                return false;
-            }
-            if (decoded.exp * 1000 < Date.now()) {
-                this.store.dispatch({ type: 'LOADED' });
-                localStorage.removeItem('token');
-                return false;
-            }
+            if (!decode) return false;
+            if (decoded.exp * 1000 < Date.now()) return false;
             return true;
         } catch (error) {
-            localStorage.removeItem('token');
-            this.store.dispatch({ type: 'LOADED' });
             return false;
         }
     }
 
     check() {
         const token = localStorage.getItem('token');
-        if (!this.verifyToken()) return;
+        if (!this.verifyToken()) {
+            localStorage.removeItem('token');
+            this.store.dispatch({ type: 'LOADED' });
+        }
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('token', token);
