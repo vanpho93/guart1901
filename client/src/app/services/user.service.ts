@@ -50,10 +50,7 @@ export class UserService {
             this.store.dispatch({ type: 'SET_USER', user: resJson.user });
             localStorage.setItem('token', resJson.user.token);
         })
-        .catch(error => {
-            console.log(error);
-            localStorage.removeItem('token');
-        })
+        .catch(error => localStorage.removeItem('token'))
         .then(() => this.store.dispatch({ type: 'LOADED' }));
     }
 

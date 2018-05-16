@@ -32,7 +32,7 @@ export class RequestService {
 
     put(subUrl: string, body) {
         const headers = new Headers({ token: localStorage.getItem('token') });
-        const response = this.http.put(SERVER_URL + subUrl, body, { headers }).toPromise()
+        const response = this.http.put(SERVER_URL + subUrl, body, { headers }).toPromise();
         return this.processResponse(response);
     }
 
