@@ -4,9 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class MustBeGuestGuard implements CanActivate {
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return true;
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const token = localStorage.getItem('token');
+    return !token;
   }
 }

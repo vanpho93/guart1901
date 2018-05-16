@@ -17,14 +17,15 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { UserService } from './services/user.service';
 import { userReducer, loadingReducer } from './ngrx/reducers';
 import { MustBeUserGuard } from './guards/must-be-user.guard';
+import { MustBeGuestGuard } from './guards/must-be-guest.guard';
 
 const routesConfig: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [MustBeUserGuard] },
   { path: 'friends', component: FriendsComponent, canActivate: [MustBeUserGuard] },
-  { path: 'signin', component: SignInComponent },
-  { path: 'signup', component: SignUpComponent },
-  { path: 'password', component: ForgotPasswordComponent },
+  { path: 'signin', component: SignInComponent, canActivate: [MustBeGuestGuard]  },
+  { path: 'signup', component: SignUpComponent, canActivate: [MustBeGuestGuard]  },
+  { path: 'password', component: ForgotPasswordComponent, canActivate: [MustBeGuestGuard]  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -47,7 +48,7 @@ const routesConfig: Routes = [
     StoreModule.forRoot({ user: userReducer, loading: loadingReducer }),
     RouterModule.forRoot(routesConfig),
   ],
-  providers: [UserService, MustBeUserGuard],
+  providers: [UserService, MustBeUserGuard, MustBeGuestGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
