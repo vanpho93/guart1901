@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../types';
+import { decode } from 'jsonwebtoken';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -29,8 +30,35 @@ export class UserService {
         });
     }
 
+    verifyToken(): boolean {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                this.store.dispatch({ type: 'LOADED' });
+                return false;
+            }
+            const decoded: any = decode(token);
+            if (!decode) {
+                this.store.dispatch({ type: 'LOADED' });
+                localStorage.removeItem('token');
+                return false;
+            }
+            if (decoded.exp * 1000 < Date.now()) {
+                this.store.dispatch({ type: 'LOADED' });
+                localStorage.removeItem('token');
+                return false;
+            }
+            return true;
+        } catch (error) {
+            localStorage.removeItem('token');
+            this.store.dispatch({ type: 'LOADED' });
+            return false;
+        }
+    }
+
     check() {
         const token = localStorage.getItem('token');
+        if (!this.verifyToken()) return;
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('token', token);
@@ -39,6 +67,9 @@ export class UserService {
         .then(res => res.json(), res => res.json())
         .then(resJson => {
             this.store.dispatch({ type: 'LOADED' });
+            if (!resJson.success) {
+                return localStorage.removeItem('token');
+            }
             this.store.dispatch({ type: 'SET_USER', user: resJson.user });
             localStorage.setItem('token', resJson.user.token);
         });

@@ -22,7 +22,9 @@
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
     "@ngrx/store": "^5.2.0",
+    "@types/jsonwebtoken": "^7.2.7",
     "core-js": "^2.4.1",
+    "jsonwebtoken": "^8.2.1",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14"
   },
