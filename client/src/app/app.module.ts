@@ -15,6 +15,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { UserService } from './services/user.service';
+import { RequestService } from './services/request.service';
 import { userReducer, loadingReducer } from './ngrx/reducers';
 import { MustBeUserGuard } from './guards/must-be-user.guard';
 import { MustBeGuestGuard } from './guards/must-be-guest.guard';
@@ -48,7 +49,7 @@ const routesConfig: Routes = [
     StoreModule.forRoot({ user: userReducer, loading: loadingReducer }),
     RouterModule.forRoot(routesConfig),
   ],
-  providers: [UserService, MustBeUserGuard, MustBeGuestGuard],
+  providers: [RequestService, UserService, MustBeUserGuard, MustBeGuestGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

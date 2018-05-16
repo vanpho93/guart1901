@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../types';
 import { decode } from 'jsonwebtoken';
+import { AppState } from '../types';
+import { RequestService } from './request.service';
 
 const SERVER_URL = 'http://localhost:3000';
 
@@ -11,23 +11,19 @@ const SERVER_URL = 'http://localhost:3000';
 
 export class UserService {
     constructor(
-        private http: Http,
         private router: Router,
-        private store: Store<AppState>
+        private store: Store<AppState>,
+        private request: RequestService
     ) {}
 
     signIn(email: string, password: string) {
-        const body = JSON.stringify({ email, password });
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        return this.http.post(`${SERVER_URL}/signin`, body, { headers })
-        .toPromise()
-        .then(res => res.json(), res => res.json())
+        return this.request.post(`/signin`, { email, password })
         .then(resJson => {
-            if (!resJson.success) return alert(resJson.message);
             this.store.dispatch({ type: 'SET_USER', user: resJson.user });
             this.router.navigate(['/profile']);
             localStorage.setItem('token', resJson.user.token);
-        });
+        })
+        .catch(error => alert(error.message));
     }
 
     verifyToken(): boolean {
@@ -44,25 +40,21 @@ export class UserService {
     }
 
     check() {
-        const token = localStorage.getItem('token');
         if (!this.verifyToken()) {
+            console.log('ko dung');
             localStorage.removeItem('token');
-            this.store.dispatch({ type: 'LOADED' });
+            return this.store.dispatch({ type: 'LOADED' });
         }
-        const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('token', token);
-        return this.http.post(`${SERVER_URL}/check`, null, { headers })
-        .toPromise()
-        .then(res => res.json(), res => res.json())
+        return this.request.post('/check', null)
         .then(resJson => {
-            this.store.dispatch({ type: 'LOADED' });
-            if (!resJson.success) {
-                return localStorage.removeItem('token');
-            }
             this.store.dispatch({ type: 'SET_USER', user: resJson.user });
             localStorage.setItem('token', resJson.user.token);
-        });
+        })
+        .catch(error => {
+            console.log(error);
+            localStorage.removeItem('token');
+        })
+        .then(() => this.store.dispatch({ type: 'LOADED' }));
     }
 
     logOut() {
