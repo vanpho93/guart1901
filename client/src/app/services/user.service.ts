@@ -39,9 +39,7 @@ export class UserService {
         .then(res => res.json(), res => res.json())
         .then(resJson => {
             this.store.dispatch({ type: 'LOADED' });
-            if (!resJson.success) return this.router.navigate(['/signin']);
             this.store.dispatch({ type: 'SET_USER', user: resJson.user });
-            this.router.navigate(['/profile']);
             localStorage.setItem('token', resJson.user.token);
         });
     }
